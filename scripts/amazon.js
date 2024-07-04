@@ -51,7 +51,7 @@ products.forEach((product) => {
                 Add to Cart
             </button>
             <p class="added-to-cart" id="addedToCart${product.id}">
-                <img src="images/icons/checkmark.png"> Added
+                <img src="images/icons/checkmark.png"> Added!
             </p>
         </div>
     `;
