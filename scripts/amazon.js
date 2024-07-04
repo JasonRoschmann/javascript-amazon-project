@@ -1,4 +1,4 @@
-import {cart} from '../data/cart.js';
+import { cart, addToCart } from '../data/cart.js';
 import { products } from '../data/products.js';
 
 let productsHTML = '';
@@ -50,59 +50,52 @@ products.forEach((product) => {
             <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${product.id}">
                 Add to Cart
             </button>
-            <p class="added-to-cart" id="addedToCart${product.id}" <img src="images/icons/checkmark.png">Added</p>
+            <p class="added-to-cart" id="addedToCart${product.id}">
+                <img src="images/icons/checkmark.png"> Added
+            </p>
         </div>
     `;
 });
 
-
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
-        // Add event listeners to each "Add to Cart" button
+function addTimeOut(productId) {
+    const addedtoCart = document.getElementById(`addedToCart${productId}`); // Get corresponding message element
+
+    addedtoCart.classList.add('visible');
+
+    // Clear any existing timeout to reset the 2-second timer
+    if (addedtoCart.messageTimeout) {
+        clearTimeout(addedtoCart.messageTimeout);
+    }
+
+    // Hide the message after 2 seconds
+    addedtoCart.messageTimeout = setTimeout(() => {
+        addedtoCart.classList.remove('visible');
+    }, 2000);
+}
+
+function updateCartQuantity() {
+    let cartQuantity = 0;
+
+    cart.forEach((item) => {
+        cartQuantity += item.quantity;
+    });
+
+    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+}
+
+// Add event listeners to each "Add to Cart" button
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
     button.addEventListener('click', () => {
-
         const { productId } = button.dataset; // Destructuring to get productId
-        const addedtoCart = document.getElementById(`addedToCart${productId}`); // Get corresponding message element
-        
-        addedtoCart.classList.add('visible');
-
-        // Clear any existing timeout to reset the 2-second timer
-        if (addedtoCart.messageTimeout) {
-            clearTimeout(addedtoCart.messageTimeout);
-        }
-
-        // Hide the message after 2 seconds
-        addedtoCart.messageTimeout = setTimeout(() => {
-            addedtoCart.classList.remove('visible');
-        }, 2000);
 
         // Find the selected quantity
         const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
         const selectedQuantity = Number(quantitySelector.value); // Convert to a number
-        let matchingItem;
-        //Quantity system
-        cart.forEach((item) => {
-            if (productId === item.productId) {
-                matchingItem = item;
-            }
-        });
 
-        if (matchingItem) {
-            matchingItem.quantity += selectedQuantity;
-        } else {
-            cart.push({
-                productId,
-                quantity: selectedQuantity
-            });
-        }
-
-        let cartQuantity = 0;
-
-        cart.forEach((item) => {
-            cartQuantity += item.quantity;
-        });
-
-        document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+        addToCart(productId, selectedQuantity);
+        updateCartQuantity();
+        addTimeOut(productId);
     });
 });
