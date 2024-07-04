@@ -154,3 +154,8 @@
   padding: 8px;
   border-radius: 50px;
 }
+
+.visible {
+  opacity: 1;
+  transition: none;
+}

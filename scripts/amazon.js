@@ -1,4 +1,5 @@
 let productsHTML = '';
+const cart = [];
 
 products.forEach((product) => {
     productsHTML += `
@@ -47,22 +48,38 @@ products.forEach((product) => {
             <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${product.id}">
                 Add to Cart
             </button>
+            <p class="added-to-cart" id="addedToCart${product.id}" <img src="images/icons/checkmark.png">Added</p>
         </div>
     `;
 });
 
+
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
+        // Add event listeners to each "Add to Cart" button
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
     button.addEventListener('click', () => {
-        const productId = button.dataset.productId;
+
+        const { productId } = button.dataset; // Destructuring to get productId
+        const addedtoCart = document.getElementById(`addedToCart${productId}`); // Get corresponding message element
+        
+        addedtoCart.classList.add('visible');
+
+        // Clear any existing timeout to reset the 2-second timer
+        if (addedtoCart.messageTimeout) {
+            clearTimeout(addedtoCart.messageTimeout);
+        }
+
+        // Hide the message after 2 seconds
+        addedtoCart.messageTimeout = setTimeout(() => {
+            addedtoCart.classList.remove('visible');
+        }, 2000);
 
         // Find the selected quantity
         const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
         const selectedQuantity = Number(quantitySelector.value); // Convert to a number
-
         let matchingItem;
-
+        //Quantity system
         cart.forEach((item) => {
             if (productId === item.productId) {
                 matchingItem = item;
@@ -73,7 +90,7 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
             matchingItem.quantity += selectedQuantity;
         } else {
             cart.push({
-                productId: productId,
+                productId,
                 quantity: selectedQuantity
             });
         }

@@ -656,5 +656,35 @@ const products = [
       "apparel",
       "mens"
     ]
+  },
+  {
+    id: "668571e8cdfd04f77c1f6914",
+    image: "images/products/Vital-C.jpeg",
+    name: "Image Skincare Vital C Hydrating Facial Cleanser 6 oz - Pack",
+    rating: {
+      stars: 5,
+      count: 1288
+    },
+    priceCents: 4798,
+    keywords: [
+      "creame",
+      "face cream",
+      "wellness"
+    ]
+  },
+  {
+    id: "668573a3cdfd04f77c1f6915",
+    image: "/images/products/Huffy-26-Nel-Lusso-Classic.jpg",
+    name: "Huffy 26 Nel Lusso Classic Cruiser Bike with Perfect Fit Frame, Women's, Ages 13 Years, Light Blue",
+    rating: {
+      stars: 4.5,
+      count: 1874
+    },
+    priceCents: 19800,
+    keywords: [
+      "creame",
+      "face cream",
+      "wellness"
+    ]
   }
 ];
