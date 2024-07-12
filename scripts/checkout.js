@@ -10,7 +10,6 @@ hello();
 const today = dayjs();
 
 function renderOrderSummary() {
-
     let cartSummaryHTML = '';
 
     cart.forEach((cartItem) => {
@@ -20,7 +19,7 @@ function renderOrderSummary() {
         if (matchingProduct) {
             const deliveryOptionId = cartItem.deliveryOptionId;
             const deliveryOption = deliveryOptions.find(option => option.id === deliveryOptionId);
-            
+
             let deliveryDateString = 'Unknown delivery date';
             if (deliveryOption) {
                 const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
@@ -116,6 +115,23 @@ function renderOrderSummary() {
         }
     }
 
+    function updateDeliveryDate(productId, deliveryDays) {
+        const deliveryDate = today.add(deliveryDays, 'days');
+        const newDeliveryDateString = deliveryDate.format('dddd, MMMM D');
+
+        // Update the delivery date in the cart data
+        const cartItem = cart.find(item => item.productId === productId);
+        if (cartItem) {
+            const deliveryOption = deliveryOptions.find(option => option.deliveryDays === deliveryDays);
+            if (deliveryOption) {
+                cartItem.deliveryOptionId = deliveryOption.id;
+            }
+        }
+
+        // Re-render the order summary
+        renderOrderSummary();
+    }
+
     // Event-Listener für Delete-Links
     document.querySelectorAll('.js-delete-link').forEach((link) => {
         link.addEventListener('click', () => {
@@ -196,12 +212,8 @@ function renderOrderSummary() {
         input.addEventListener('change', () => {
             const productId = input.dataset.productId;
             const deliveryDays = parseInt(input.dataset.deliveryDays);
-            const newDeliveryDate = today.add(deliveryDays, 'days');
-            const newDeliveryDateString = newDeliveryDate.format('dddd, MMMM D');
 
-            // Update the delivery date in the DOM
-            const deliveryDateElement = document.querySelector(`.js-delivery-date-${productId}`);
-            deliveryDateElement.textContent = `Delivery date: ${newDeliveryDateString}`;
+            updateDeliveryDate(productId, deliveryDays);
         });
     });
 
