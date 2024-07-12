@@ -1,4 +1,4 @@
-import { cart, addToCart } from '../data/cart.js';
+import { cart, addToCart, calculateCartQuantity  } from '../data/cart.js';
 import { products } from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
 
@@ -78,23 +78,15 @@ function addTimeOut(productId) {
 }
 
 function updateCartQuantity() {
-    let cartQuantity = 0;
-
-    cart.forEach((item) => {
-        cartQuantity += item.quantity;
-    });
-
+    const cartQuantity = calculateCartQuantity();
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
 }
 
-// Add event listeners to each "Add to Cart" button
-    document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+document.querySelectorAll('.js-add-to-cart').forEach((button) => {
     button.addEventListener('click', () => {
-        const { productId } = button.dataset; // Destructuring to get productId
-
-        // Find the selected quantity
+        const productId = button.dataset.productId;
         const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
-        const selectedQuantity = Number(quantitySelector.value); // Convert to a number
+        const selectedQuantity = Number(quantitySelector.value);
 
         addToCart(productId, selectedQuantity);
         updateCartQuantity();
@@ -103,21 +95,3 @@ function updateCartQuantity() {
 });
 
 updateCartQuantity();
-
-
-// Get the quantity span element
-const quantitySpan = document.getElementById('checkout-quantity')
-
-
-// Get the cart item containers
-const cartItemContainers = document.querySelectorAll('.cart-item-container')
-
-
-// Calculate the total quantity
-let totalQuantity = 0
-cartItemContainers.forEach((container) => {
-  const quantityLabel = container.querySelector('.quantity-label')
-  totalQuantity += parseInt(quantityLabel.textContent)
-})
-
-

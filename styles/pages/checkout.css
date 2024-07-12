@@ -1,0 +1,29 @@
+.quantity-input {
+    width: 30px;
+    margin-left: 5px;
+    text-align: center;
+    display: none;
+}
+
+.link-primary {
+    color: #007185;
+    cursor: pointer;
+}
+
+.link-primary:hover {
+    text-decoration: underline;
+}
+
+.js-save-link {
+    display: none;
+}
+
+.is-editing-quantity .quantity-label-container,
+.is-editing-quantity .js-update-link {
+    display: none;
+}
+
+.is-editing-quantity .quantity-input,
+.is-editing-quantity .js-save-link {
+    display: initial;
+}
