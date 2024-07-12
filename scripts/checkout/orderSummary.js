@@ -1,9 +1,9 @@
 import { cart, removeFromCart, calculateCartQuantity, updateQuantity } from "../../data/cart.js";
-import { products } from "../../data/products.js";
+import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import { hello } from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
-import { deliveryOptions } from '../../data/deliveryOptions.js';
+import { deliveryOptions, getDeliveryOptionById } from '../../data/deliveryOptions.js';
 
 hello();
 
@@ -14,7 +14,7 @@ export function renderOrderSummary() {
 
     cart.forEach((cartItem) => {
         const productId = cartItem.productId;
-        const matchingProduct = products.find(product => product.id === productId);
+        const matchingProduct = getProduct(productId);  // Use the imported function
 
         if (matchingProduct) {
             const deliveryOptionId = cartItem.deliveryOptionId;
@@ -24,6 +24,12 @@ export function renderOrderSummary() {
             if (deliveryOption) {
                 const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
                 deliveryDateString = deliveryDate.format('dddd, MMMM D');
+            }
+
+            if (deliveryOption) {
+                console.log(`Delivery option: ${deliveryOption.deliveryDays} days, ${deliveryOption.priceCents} cents`);
+            } else {
+                console.log('Delivery option not found');
             }
 
             cartSummaryHTML += `
@@ -132,7 +138,7 @@ export function renderOrderSummary() {
         renderOrderSummary();
     }
 
-    // Event-Listener für Delete-Links
+    // Event listener for delete links
     document.querySelectorAll('.js-delete-link').forEach((link) => {
         link.addEventListener('click', () => {
             const productId = link.dataset.productId;
@@ -147,7 +153,7 @@ export function renderOrderSummary() {
         });
     });
 
-    // Event-Listener für Update-Links
+    // Event listener for update links
     document.querySelectorAll('.js-update-link').forEach((link) => {
         link.addEventListener('click', () => {
             const productId = link.dataset.productId;
@@ -159,7 +165,7 @@ export function renderOrderSummary() {
             container.querySelector('.quantity-label-container').style.display = 'none';
             container.querySelector(`.js-update-link[data-product-id="${productId}"]`).style.display = 'none';
 
-            // Event-Listener für Enter-Taste
+            // Event listener for enter key
             container.querySelector(`.js-quantity-input-${productId}`).addEventListener('keypress', (event) => {
                 if (event.key === 'Enter') {
                     saveQuantity(productId);
@@ -168,12 +174,12 @@ export function renderOrderSummary() {
         });
     });
 
-    // Funktion zum Speichern der neuen Menge
+    // Function to save the new quantity
     function saveQuantity(productId) {
         const quantityInput = document.querySelector(`.js-quantity-input-${productId}`);
         let newQuantity = parseInt(quantityInput.value);
 
-        // Validierung der neuen Menge
+        // Validate the new quantity
         if (isNaN(newQuantity) || newQuantity < 1 || newQuantity >= 1000) {
             alert('Please enter a valid quantity between 1 and 999.');
             return;
@@ -181,25 +187,25 @@ export function renderOrderSummary() {
 
         console.log(`Save clicked: New quantity is ${newQuantity} for product ID: ${productId}`);
         
-        // Aktualisieren des Warenkorbartikels mit der neuen Menge
+        // Update the cart item with the new quantity
         updateQuantity(productId, newQuantity);
 
-        // Aktualisieren der Menge im DOM
+        // Update the quantity in the DOM
         const container = document.querySelector(`.js-cart-item-container-${productId}`);
         container.querySelector('.quantity-label').textContent = newQuantity;
 
-        // Entfernen der Bearbeitungsklasse nach dem Speichern
+        // Remove the editing class after saving
         container.classList.remove('is-editing-quantity');
         container.querySelector(`.js-quantity-input-${productId}`).style.display = 'none';
         container.querySelector(`.js-save-link[data-product-id="${productId}"]`).style.display = 'none';
         container.querySelector('.quantity-label-container').style.display = 'initial';
         container.querySelector(`.js-update-link[data-product-id="${productId}"]`).style.display = 'initial';
 
-        // Aktualisieren der Gesamtmenge im Checkout und Header
+        // Update the total quantity in the checkout and header
         updateCheckoutQuantity();
     }
 
-    // Event-Listener für Save-Links
+    // Event listener for save links
     document.querySelectorAll('.js-save-link').forEach((link) => {
         link.addEventListener('click', () => {
             const productId = link.dataset.productId;
@@ -207,7 +213,7 @@ export function renderOrderSummary() {
         });
     });
 
-    // Event-Listener für Delivery-Option-Links
+    // Event listener for delivery option inputs
     document.querySelectorAll('.delivery-option-input').forEach((input) => {
         input.addEventListener('change', () => {
             const productId = input.dataset.productId;
