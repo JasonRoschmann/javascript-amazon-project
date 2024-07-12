@@ -1,7 +1,6 @@
 import { cart, removeFromCart, calculateCartQuantity, updateQuantity } from "../../data/cart.js";
 import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
-import { hello } from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import { deliveryOptions, getDeliveryOptionById } from '../../data/deliveryOptions.js';
 import { renderPaymentSummary } from "./paymentSummary.js";
@@ -137,22 +136,17 @@ export function renderOrderSummary() {
         renderOrderSummary();
     }
 
-    // Event listener for delete links
-    document.querySelectorAll('.js-delete-link').forEach((link) => {
-        link.addEventListener('click', () => {
-            const productId = link.dataset.productId;
-            removeFromCart(productId);
+   // Event listener for delete links
+document.querySelectorAll('.js-delete-link').forEach((link) => {
+    link.addEventListener('click', () => {
+        const productId = link.dataset.productId;
+        removeFromCart(productId);
 
-            const container = document.querySelector(`.js-cart-item-container-${productId}`);
-            if (container) {
-                container.remove();
-
-                renderPaymentSummary();
-            }
-
-            updateCheckoutQuantity();
-        });
+        renderOrderSummary(); // Re-render the order summary
+        renderPaymentSummary();
+        updateCheckoutQuantity();
     });
+});
 
     // Event listener for update links
     document.querySelectorAll('.js-update-link').forEach((link) => {
