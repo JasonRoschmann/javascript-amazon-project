@@ -1,4 +1,4 @@
-
+// orderSummary.js
 
 import { cart, removeFromCart, calculateCartQuantity, updateQuantity } from "../../data/cart.js";
 import { products, getProduct } from "../../data/products.js";
@@ -33,7 +33,7 @@ export function renderOrderSummary() {
                     <div class="cart-item-details-grid">
                         <img class="product-image" src="${matchingProduct.image}">
                         <div class="cart-item-details">
-                            <div class="product-name">
+                            <div class="product-name js-product-name">
                                 ${matchingProduct.name}
                             </div>
                             <div class="product-price">
@@ -69,19 +69,19 @@ export function renderOrderSummary() {
 
     function deliveryOptionsHTML(matchingProduct, cartItem) {
         let html = '';
-
+    
         deliveryOptions.forEach((deliveryOption) => {
             const deliveryDateString = calculateDeliveryDate(deliveryOption);
-
+    
             const priceString = deliveryOption.priceCents === 0
                 ? 'FREE'
                 : `$${formatCurrency(deliveryOption.priceCents)}`;
-
+    
             const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
-
+    
             html += `
-                <div class="delivery-option">
-                    <input type="radio" ${isChecked ? 'checked' : ''} class="delivery-option-input" name="delivery-option-${matchingProduct.id}" data-product-id="${matchingProduct.id}" data-delivery-days="${deliveryOption.deliveryDays}">
+                <div class="delivery-option js-delivery-option-${matchingProduct.id}-${deliveryOption.id}">
+                    <input type="radio" ${isChecked ? 'checked' : ''} class="delivery-option-input js-delivery-option-input-${matchingProduct.id}-${deliveryOption.id}" name="delivery-option-${matchingProduct.id}" data-product-id="${matchingProduct.id}" data-delivery-days="${deliveryOption.deliveryDays}" data-delivery-option-id="${deliveryOption.id}">
                     <div>
                         <div class="delivery-option-date">
                             ${deliveryDateString}
@@ -93,7 +93,7 @@ export function renderOrderSummary() {
                 </div>
             `;
         });
-
+    
         return html;
     }
 

@@ -58,3 +58,13 @@ export function updateQuantity(productId, newQuantity) {
         saveToStorage();
     }
 }
+
+export function updateDeliveryOption(productId, newDeliveryOptionId) {
+    const cartItem = cart.find(item => item.productId === productId);
+    if (!cartItem) {
+        return; // Product not found in cart, do nothing
+    }
+
+    cartItem.deliveryOptionId = newDeliveryOptionId;
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
