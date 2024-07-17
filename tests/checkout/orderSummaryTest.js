@@ -1,10 +1,17 @@
 import { renderOrderSummary } from './orderSummary.js';
 import { cart, updateQuantity } from '../../data/cart.js';
-import { products, getProduct } from '../../data/products.js';
+import { products, getProduct, loadProducts } from '../../data/products.js';
 import { deliveryOptions, getDeliveryOptionById } from '../../data/deliveryOptions.js';
 import { renderPaymentSummary } from './paymentSummary.js';
 
 describe('order summary tests', () => {
+
+    beforeAll((done) => {
+        loadProducts(() => {
+            done();
+        });
+    });
+    
     beforeEach(() => {
         const testContainer = document.createElement('div');
         testContainer.className = 'js-test-container';
