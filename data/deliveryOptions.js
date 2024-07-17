@@ -3,16 +3,19 @@ import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 export const deliveryOptions = [
     {
         id: '1',
+        name: 'Standard Delivery',
         deliveryDays: 7,
         priceCents: 0
     },
     {
         id: '2',
+        mame: 'Express Delivery',
         deliveryDays: 3,
         priceCents: 499
     },
     {
         id: '3',
+        name: 'Priority Delivery',
         deliveryDays: 1,
         priceCents: 999
     }

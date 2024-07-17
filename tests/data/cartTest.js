@@ -1,5 +1,5 @@
 import {addToCart, cart, loadFromStorage, removeFromCart, updateDeliveryOption } from '../../data/cart.js';
-import { deliveryOptions } from '../../data/deliveryOptions.jsS';
+import { deliveryOptions } from '../../data/deliveryOptions.js';
 
 describe('test suite: addToCart', () => {
     beforeEach(() => {

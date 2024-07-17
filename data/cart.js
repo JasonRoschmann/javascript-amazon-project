@@ -1,3 +1,4 @@
+import { deliveryOptions } from './deliveryOptions.js';
 export let cart;
 
 loadFromStorage();
@@ -59,12 +60,14 @@ export function updateQuantity(productId, newQuantity) {
     }
 }
 
-export function updateDeliveryOption(productId, newDeliveryOptionId) {
-    const cartItem = cart.find(item => item.productId === productId);
-    if (!cartItem) {
-        return; // Product not found in cart, do nothing
+export function updateDeliveryOption(productId, deliveryOptionId) {
+    const productIndex = cart.findIndex((product) => product.productId === productId);
+    if (productIndex!== -1) {
+      const deliveryOption = deliveryOptions.find((option) => option.id === deliveryOptionId);
+      if (deliveryOption) {
+        cart[productIndex].deliveryOptionId = deliveryOptionId;
+        localStorage.setItem('cart', JSON.stringify(cart));
+      }
+      // Do nothing if the delivery option ID is not valid
     }
-
-    cartItem.deliveryOptionId = newDeliveryOptionId;
-    localStorage.setItem('cart', JSON.stringify(cart));
-}
+  }
