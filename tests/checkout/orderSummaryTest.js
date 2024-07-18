@@ -1,13 +1,13 @@
 import { renderOrderSummary } from './orderSummary.js';
 import { cart, updateQuantity } from '../../data/cart.js';
-import { products, getProduct, loadProducts } from '../../data/products.js';
+import { products, getProduct, loadProducts, loadProductsFetch } from '../../data/products.js';
 import { deliveryOptions, getDeliveryOptionById } from '../../data/deliveryOptions.js';
 import { renderPaymentSummary } from './paymentSummary.js';
 
 describe('order summary tests', () => {
 
     beforeAll((done) => {
-        loadProducts(() => {
+        loadProductsFetch().then(() => {
             done();
         });
     });
