@@ -2,6 +2,7 @@ import { cart, calculateCartQuantity } from "../../data/cart.js";
 import { getProduct } from "../../data/products.js";
 import { getDeliveryOptionById } from "../../data/deliveryOptions.js";
 import { formatCurrency } from '../utils/money.js';
+import { addOrder } from "../../data/orders.js";
 
 export function renderPaymentSummary() {
     let productPriceCents = 0;
@@ -68,7 +69,8 @@ export function renderPaymentSummary() {
             </div>
         </div>
 
-        <button class="place-order-button button-primary">
+        <button class="place-order-button button-primary
+        js-place-order">
             Place your order
         </button>
     `;
@@ -79,6 +81,28 @@ export function renderPaymentSummary() {
     } else {
         console.error('Payment summary element not found.');
     }
+
+    document.querySelector('.js-place-order')
+    .addEventListener('click', async() => {
+      try {
+        const response = await fetch('https://supersimplebackend.dev/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            cart: cart
+          })
+        });
+        const order = await response.json();
+        addOrder(order);
+
+    } catch (error) {
+        console.error('Unexpected error. Try again later.');
+    }
+    
+    window.location.href = 'orders.html';
+    });
 }
 
 // Call the function to render the payment summary
