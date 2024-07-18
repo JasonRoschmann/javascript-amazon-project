@@ -1,4 +1,4 @@
-class Car {
+/* class Car {
     #brand;
     #model;
     speed; // Changed back to public
@@ -147,3 +147,4 @@ raceCar.displayInfo(); // Should show speed as 0 km/h
 // Trunk operations
 raceCar.openTrunk(); // Should print race cars do not have a trunk
 raceCar.closeTrunk(); // Should print race cars do not have a trunk
+*/
