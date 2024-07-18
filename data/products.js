@@ -105,6 +105,7 @@ const object3 = {
 object3.method();
 */
 
+/*
 export let products = [];
 
 export function loadProductsFetch() {
@@ -131,13 +132,15 @@ export function loadProductsFetch() {
 
   return promise;
 }
-
+*/
 
 /*
 loadProductsfetch().then(() => {
   console.log('next step');
 });
 */
+
+/*
 
 export function loadProducts(fun) {
  const xhr = new XMLHttpRequest();
@@ -165,9 +168,9 @@ xhr.addEventListener('error', (error) => {
  xhr.send();
 }
 
+*/
 
 
-/*
 export const products = [
 
   {
@@ -875,4 +878,4 @@ export const products = [
   }
   return new Product(productDetails);
 });
-*/
+

@@ -1,11 +1,11 @@
 import { renderOrderSummary } from "./checkout/orderSummary.js";
 import { renderPaymentSummary } from "./checkout/paymentSummary.js";
 import '../data/car.js';
-import { loadProducts, loadProductsFetch } from "../data/products.js";
+//import { loadProducts, loadProductsFetch } from "../data/products.js";
 import { loadCart } from "../data/cart.js";
 //import '../data/backend-practice.js';
 // import '../data/cart-class.js';
-
+/*
 async function loadPage() {
     try {
        // throw 'error1';
@@ -33,7 +33,7 @@ async function loadPage() {
 }
     loadPage();
 
-
+*/
 /*
 Promise.all([
     loadProductsFetch(),
