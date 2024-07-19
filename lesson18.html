@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 18</title>
+</head>
+<body>
+    <h1>Lesson 18: Making HTTP Requests</h1>
+    <script>
+        // XMLHttpRequest GET request with error handling
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://supersimplebackend.dev/greeting', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    console.log("XMLHttpRequest response:", xhr.responseText);
+                } else {
+                    console.error("CORS error: Your request was blocked by the backend.");
+                }
+            }
+        };
+        xhr.send();
+
+        // Fetch API GET request with error handling
+        fetch('https://supersimplebackend.dev/greeting')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('CORS error: Your request was blocked by the backend.');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log("Fetch GET response:", data);
+            })
+            .catch(error => {
+                console.error(error.message);
+            });
+
+        // Fetch API GET request with async/await and error handling
+        async function fetchGreeting() {
+            try {
+                const response = await fetch('https://supersimplebackend.dev/greeting');
+                if (!response.ok) {
+                    throw new Error('CORS error: Your request was blocked by the backend.');
+                }
+                const data = await response.text();
+                console.log("Fetch with async/await GET response:", data);
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+
+        // Call the async function
+        fetchGreeting();
+
+        // Fetch API POST request with async/await and error handling (with no body)
+        async function postGreetingNoBody() {
+            try {
+                const response = await fetch('https://supersimplebackend.dev/greeting', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    // No body sent
+                });
+                if (!response.ok) {
+                    throw response; // Manually throw the response for non-200 statuses
+                }
+                const data = await response.text();
+                console.log("Fetch with async/await POST response:", data);
+            } catch (error) {
+                if (error.status === 400) {
+                    const errorData = await error.json();
+                    console.error("400 Error response:", errorData);
+                } else {
+                    console.error("Network error. Please try again later.");
+                }
+            }
+        }
+
+        // Call the async POST function with no body
+        postGreetingNoBody();
+
+        // CORS error example
+        async function fetchAmazon() {
+            try {
+                const response = await fetch('https://amazon.com');
+                if (!response.ok) {
+                    throw new Error('CORS error: Your request was blocked by the backend.');
+                }
+                const data = await response.text();
+                console.log("Fetch Amazon response:", data);
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+
+        // Uncomment the following line to see the CORS error
+        // fetchAmazon();
+
+    </script>
+</body>
+</html>
